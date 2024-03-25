@@ -85,7 +85,7 @@ def csvOperations():
     # select_columns(1, len(df.columns), df, "csvWithHeader.csv")
 
     select_rows(0, 10, df, "csvFirstRows.csv")
-    # TODO bazi satirlari sil
+    
     # for i in range(3, len(df)):
     for i in range(3, 10):
         df.loc[i, "Audio"] = insertDefinition(df["Word"][i])
