@@ -1,12 +1,8 @@
-import os
-import sys
-import json
 import pandas as pd
-
 import requests
 from requests.exceptions import HTTPError
 
-from oxford import setOxfordKey, getLemmas, formatEntry
+from oxford import getLemmas, formatEntry
 
 KEY_FIELD = 0  # already contains word and must append audio
 DEFINITION_FIELD = 1
@@ -15,14 +11,14 @@ WHAT_TO_INSERT = "pronunciation"
 PRIMARY_SHORTCUT = "ctrl+alt+d"
 
 
-def insertDefinition():
+def insertDefinition(target):
     # update config
 
     # Get the word
     word = ""
     try:
         # word = editor.note.fields[0]
-        word = "hello"
+        word = target
         if word == "" or word.isspace():
             raise KeyError()  # Purely to jump to the tooltip here
     except (AttributeError, KeyError) as e:
@@ -77,8 +73,10 @@ def insertDefinition():
 
     for sound_url in sounds:
         response = requests.get(sound_url)
-        with open(f'{word}.mp3', 'wb') as file:
+        with open(f'oxford_{word}.mp3', 'wb') as file:
             file.write(response.content)
+
+    return "oxford_" + target + ".mp3"
 
 
 def csvOperations():
@@ -94,7 +92,13 @@ def csvOperations():
 
     df.loc[3, "Audio"] = "[bla bla]"
     print(df["Audio"][3])
-    df.to_csv("blabla.csv", sep='\t', index=False)
+
+    # for i in range(3, len(df)):
+    for i in range(3, 10):
+        df.loc[i, "Audio"] = insertDefinition(df["Word"][i])
+        print(i)
+
+    df.to_csv("blabla2.csv", sep='\t', index=False)
 
 # setting header names
 # headers = ['', 'ID', 'Word', 'Definition', 'Class', 'Register', 'CEFR Level', 'IPA', 'Image', 'Example', 'Cambridge Examples', 'Audio', 'Definition Audio', 'Example Audio', 'Explanation', 'Morphology', 'Etymology', 'Connected Words', 'Hint', 'Tags']
