@@ -76,33 +76,51 @@ def insertDefinition(target):
         with open(f'oxford_{word}.mp3', 'wb') as file:
             file.write(response.content)
 
-    return "oxford_" + target + ".mp3"
+    return "[sound:oxford_" + target + ".mp3]"
 
 
 def csvOperations():
     # read csv file
-    df = pd.read_csv("blabla.csv", delimiter='\t')
-    # print(df)
+    df = pd.read_csv("csvWithHeader.csv", delimiter='\t')
+    # select_columns(1, len(df.columns), df, "csvWithHeader.csv")
 
-    words = list(df["Word"][3:])
-    print(words[0])
-
-    # sounds = list(df["Unnamed: 11"][3:])
-    # print(sounds[0])
-
-    df.loc[3, "Audio"] = "[bla bla]"
-    print(df["Audio"][3])
-
+    select_rows(0, 10, df, "csvFirstRows.csv")
+    # TODO bazi satirlari sil
     # for i in range(3, len(df)):
     for i in range(3, 10):
         df.loc[i, "Audio"] = insertDefinition(df["Word"][i])
         print(i)
 
-    df.to_csv("blabla2.csv", sep='\t', index=False)
+    df.to_csv("csvChangedAudio.csv", sep='\t', index=False)
 
-# setting header names
+    """
+    # writing df to a new csv file
+    df.to_csv("blabla3.csv", sep='\t', index=False)
+    
+    # select some rows
+    words = list(df["Word"][3:])
+    print(words[0])
+    """
+
+
+def select_columns(start, end, df, target_file):
+    selected_columns = df.iloc[:, start:end]
+    selected_columns.to_csv(target_file, sep='\t', index=False)
+
+
+def select_rows(start, end, df, target_file):
+    selected_rows = df.iloc[start:end]
+    selected_rows.to_csv(target_file, sep='\t', index=False)
+
+
 # headers = ['', 'ID', 'Word', 'Definition', 'Class', 'Register', 'CEFR Level', 'IPA', 'Image', 'Example', 'Cambridge Examples', 'Audio', 'Definition Audio', 'Example Audio', 'Explanation', 'Morphology', 'Etymology', 'Connected Words', 'Hint', 'Tags']
 # df.to_csv("blabla.csv", header=headers, sep='\t', index=False)
+def define_headers(*args, df):
+    headers = []
+    for item in args:
+        headers += item
 
-# insertDefinition()
+    df.to_csv("blabla.csv", header=headers, sep='\t', index=False)
+
+
 csvOperations()
