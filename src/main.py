@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 from requests.exceptions import HTTPError
 
-from oxford import getLemmas, formatEntry
+from oxford_api import getLemmas, formatEntry
 
 KEY_FIELD = 0  # already contains word and must append audio
 DEFINITION_FIELD = 1
