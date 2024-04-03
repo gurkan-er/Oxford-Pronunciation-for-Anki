@@ -11,7 +11,7 @@ WHAT_TO_INSERT = "pronunciation"
 PRIMARY_SHORTCUT = "ctrl+alt+d"
 
 
-def insertDefinition(target):
+def insert_definition(target):
     # update config
 
     # Get the word
@@ -39,15 +39,15 @@ def insertDefinition(target):
 
     # Format word
     definition = ""
-    soundURLs = set()
+    sound_urls = set()
     for result in wordInfos['results']:
         for lexical in result:
-            ########## Definition format ##########
+            # Definition format
             definition += '<hr>'
             definition += '<b>' + lexical['lexicalCategory'] + '.</b><br>'
             for entry in lexical['entries']:
                 if "pronunciations" in entry:  # sounds saved for later
-                    soundURLs.update(entry["pronunciations"])
+                    sound_urls.update(entry["pronunciations"])
 
                 for sense in entry['senses']:
                     definition += '<p>'
@@ -68,8 +68,8 @@ def insertDefinition(target):
                 definition += '<h5>Derivatives:</h5> '
                 definition += '<br>'.join(lexical['derivatives']) + '<br>'
 
-    ############# Output ##############
-    sounds = [url.strip() for url in soundURLs]
+    # Output
+    sounds = [url.strip() for url in sound_urls]
 
     for sound_url in sounds:
         response = requests.get(sound_url)
@@ -79,27 +79,20 @@ def insertDefinition(target):
     return f"[sound:oxford_{target}.mp3]"
 
 
-def csvOperations():
+def csv_operations():
     # read csv file
-    df = pd.read_csv("../data/csvChangedAudio.csv", delimiter='\t')
+    df = pd.read_csv("../data/input.csv", delimiter='\t')
 
     for i in range(187, len(df)):
-        df.loc[i, "Audio"] = insertDefinition(df["Word"][i])
-        df.to_csv("../data/csvChangedAudio.csv", sep='\t', index=False)
+        df.loc[i, "Audio"] = insert_definition(df["Word"][i])
+
+        # write df to a csv file
+        df.to_csv("../data/output.csv", sep='\t', index=False)
         print(i)
 
-    select_rows(0, 10, df, "../data/csvFirstRows.csv")
+    select_rows(0, 10, df, "../data/outputFirstRows.csv")
 
-    df.to_csv("../data/csvChangedAudio.csv", sep='\t', index=False)
-
-    """
-    # writing df to a new csv file
-    df.to_csv("../data/blabla3.csv", sep='\t', index=False)
-    
-    # select some rows
-    words = list(df["Word"][3:])
-    print(words[0])
-    """
+    df.to_csv("../data/output.csv", sep='\t', index=False)
 
 
 def select_columns(start, end, df, target_file):
@@ -166,7 +159,6 @@ def define_headers(*args, df):
     for item in args:
         headers += item
 
-    df.to_csv("../data/blabla.csv", header=headers, sep='\t', index=False)
-
+    df.to_csv("../data/inputWithHeader.csv", header=headers, sep='\t', index=False)
 
 # csvOperations()
