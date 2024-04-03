@@ -3,8 +3,8 @@ from typing import Dict, List
 import requests
 from requests.exceptions import HTTPError
 
-APP_ID = "55468c08"
-APP_KEY = "b1439da038e5c1b9e2a17286eebcecca"
+APP_ID = "add your id"
+APP_KEY = "add your key"
 
 base_url = "https://od-api.oxforddictionaries.com/api/v2"
 
