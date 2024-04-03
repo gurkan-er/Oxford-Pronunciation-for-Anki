@@ -81,20 +81,20 @@ def insertDefinition(target):
 
 def csvOperations():
     # read csv file
-    df = pd.read_csv("csvChangedAudio.csv", delimiter='\t')
+    df = pd.read_csv("../data/csvChangedAudio.csv", delimiter='\t')
 
-    for i in range(186, len(df)):
+    for i in range(187, len(df)):
         df.loc[i, "Audio"] = insertDefinition(df["Word"][i])
-        df.to_csv("csvChangedAudio.csv", sep='\t', index=False)
+        df.to_csv("../data/csvChangedAudio.csv", sep='\t', index=False)
         print(i)
 
-    select_rows(0, 10, df, "csvFirstRows.csv")
+    select_rows(0, 10, df, "../data/csvFirstRows.csv")
 
-    df.to_csv("csvChangedAudio.csv", sep='\t', index=False)
+    df.to_csv("../data/csvChangedAudio.csv", sep='\t', index=False)
 
     """
     # writing df to a new csv file
-    df.to_csv("blabla3.csv", sep='\t', index=False)
+    df.to_csv("../data/blabla3.csv", sep='\t', index=False)
     
     # select some rows
     words = list(df["Word"][3:])
@@ -104,12 +104,12 @@ def csvOperations():
 
 def select_columns(start, end, df, target_file):
     selected_columns = df.iloc[:, start:end]
-    selected_columns.to_csv(target_file, sep='\t', index=False)
+    selected_columns.to_csv('../data/' + target_file, sep='\t', index=False)
 
 
 def select_rows(start, end, df, target_file):
     selected_rows = df.iloc[start:end]
-    selected_rows.to_csv(target_file, sep='\t', index=False)
+    selected_rows.to_csv('../data/' + target_file, sep='\t', index=False)
 
 
 def move_column(location: int, df, column_name: str):
@@ -158,13 +158,15 @@ def insert_column_with_name(location: str, df, column_name: str, new_column):
     df.insert(df.columns.get_loc(location), column_name, new_column)
 
 
-# headers = ['', 'ID', 'Word', 'Definition', 'Class', 'Register', 'CEFR Level', 'IPA', 'Image', 'Example', 'Cambridge Examples', 'Audio', 'Definition Audio', 'Example Audio', 'Explanation', 'Morphology', 'Etymology', 'Connected Words', 'Hint', 'Tags']
-# df.to_csv("blabla.csv", header=headers, sep='\t', index=False)
 def define_headers(*args, df):
+    # headers = ['', 'ID', 'Word', 'Definition', 'Class', 'Register', 'CEFR Level', 'IPA', 'Image', 'Example',
+    # 'Cambridge Examples', 'Audio', 'Definition Audio', 'Example Audio', 'Explanation', 'Morphology', 'Etymology',
+    # 'Connected Words', 'Hint', 'Tags']
     headers = []
     for item in args:
         headers += item
 
-    df.to_csv("blabla.csv", header=headers, sep='\t', index=False)
+    df.to_csv("../data/blabla.csv", header=headers, sep='\t', index=False)
+
 
 # csvOperations()
