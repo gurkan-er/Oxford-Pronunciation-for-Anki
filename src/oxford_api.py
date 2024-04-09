@@ -47,7 +47,12 @@ def getEntry(word, app_id=None, app_key=None, language=language):
         app_id = APP_ID
         app_key = APP_KEY
 
-    url = base_url + "/entries/" + language + '/' + word
+    # endpoint can be Entries, Lemmas, Search, Translations, Thesaurus
+    # Sentences, Utility, Words, Inflections
+    # <https://developer.oxforddictionaries.com/documentation>
+    endpoint = "entries"
+
+    url = base_url + "/" + endpoint + "/" + language + '/' + word
     r = requests.get(url, headers={"app_id": app_id, "app_key": app_key})
 
     if not r.ok:
