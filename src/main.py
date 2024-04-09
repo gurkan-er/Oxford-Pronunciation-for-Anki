@@ -105,24 +105,38 @@ def select_rows(start, end, df, target_file):
     selected_rows.to_csv('../data/' + target_file, sep='\t', index=False)
 
 
-def move_column(location: int, df, column_name: str):
+def change_audio_section(df, target_file):
+    for i in range(len(df)):
+        file_name = df["Word"][i]
+        df.loc[i, "Audio"] = f"[sound:cambridge_{file_name}.mp3]"
+
+    df.to_csv('../data/' + target_file, sep='\t', index=False)
+
+
+def move_column(location: int, df, column_name: str, target_file):
     """
     If you want to move "ID" column to the location of another column:
-    move_column(5, df, "ID")
+    move_column(5, df, "ID", "output.csv")
     """
 
     # pop the column and paste to the index
     df.insert(location, column_name, df.pop(column_name))
 
+    # save
+    df.to_csv('../data/' + target_file, sep='\t', index=False)
 
-def move_column_with_name(location: str, df, column_name: str):
+
+def move_column_with_name(location: str, df, column_name: str, target_file):
     """
     If you want to move "ID" column in place of another column named "Hint":
-    move_column("Hint", df, "ID")
+    move_column_with_name("Hint", df, "ID", "output.csv")
     """
 
     # pop the column and paste to the index
     df.insert(df.columns.get_loc(location), column_name, df.pop(column_name))
+
+    # save
+    df.to_csv('../data/' + target_file, sep='\t', index=False)
 
 
 def insert_column(location: int, df, column_name: str, new_column):
@@ -138,27 +152,43 @@ def insert_column(location: int, df, column_name: str, new_column):
     df.insert(location, column_name, new_column)
 
 
-def insert_column_with_name(location: str, df, column_name: str, new_column):
+def insert_column_with_name(location: str, df, column_name: str, new_column, target_file):
     """
     If you want to insert a column called "this" in place of another column named "Hint":
-    insert_column("Hint", df, "this", " ")
+    insert_column_with_name("Hint", df, "this", " ", "output.csv")
     column will have empty items
 
     If you want to insert a column called "this" that contains the values of the "ID" column, in place of another
     column named "Hint":
-    insert_column("Hint", df, "this", df["ID"])
+    insert_column_with_name("Hint", df, "this", df["ID"], "output.csv")
     """
     df.insert(df.columns.get_loc(location), column_name, new_column)
 
+    # save
+    df.to_csv('../data/' + target_file, sep='\t', index=False)
 
-def define_headers(*args, df):
-    # headers = ['', 'ID', 'Word', 'Definition', 'Class', 'Register', 'CEFR Level', 'IPA', 'Image', 'Example',
+
+def take_number_of_rows_columns(df):
+    # rows: len(df)
+    # columns: len(df.columns)
+
+    num_rows, num_cols = df.shape
+
+    return num_rows, num_cols
+
+
+def define_headers(*args, df, target_file):
+    # headers = [''ID', 'Word', 'Definition', 'Class', 'Register', 'CEFR Level', 'IPA', 'Image', 'Example',
     # 'Cambridge Examples', 'Audio', 'Definition Audio', 'Example Audio', 'Explanation', 'Morphology', 'Etymology',
     # 'Connected Words', 'Hint', 'Tags']
+    #
+    # define_headers(headers, df=df, target_file="_c1.csv")
+
     headers = []
     for item in args:
         headers += item
 
-    df.to_csv("../data/inputWithHeader.csv", header=headers, sep='\t', index=False)
+    file_name = '../data/' + target_file
+    df.to_csv(file_name, header=headers, sep='\t', index=False)
 
-# csvOperations()
+# csv_operations()
