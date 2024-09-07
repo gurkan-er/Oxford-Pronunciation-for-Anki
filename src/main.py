@@ -178,11 +178,13 @@ def take_number_of_rows_columns(df):
 
 
 def define_headers(*args, df, target_file):
-    # headers = [''ID', 'Word', 'Definition', 'Class', 'Register', 'CEFR Level', 'IPA', 'Image', 'Example',
-    # 'Cambridge Examples', 'Audio', 'Definition Audio', 'Example Audio', 'Explanation', 'Morphology', 'Etymology',
-    # 'Connected Words', 'Hint', 'Tags']
-    #
-    # define_headers(headers, df=df, target_file="_c1.csv")
+    """
+        headers = ['Word', 'Definition', 'Class', 'Register', 'CEFR Level', 'IPA', 'Image', 'Example', 'Cambridge Examples',
+               'Audio', 'Definition Audio', 'Example Audio', 'Explanation', 'Morphology', 'Etymology', 'Connected Words',
+               'Hint', 'ID', 'Hide this', 'Tags']
+
+        define_headers(headers, df=df, target_file="_c1.csv")
+    """
 
     headers = []
     for item in args:

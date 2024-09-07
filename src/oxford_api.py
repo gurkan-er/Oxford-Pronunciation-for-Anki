@@ -1,7 +1,7 @@
 from typing import Dict, List
 
 import requests
-from requests.exceptions import HTTPError
+from requests import HTTPError
 
 APP_ID = "add your id"
 APP_KEY = "add your key"
@@ -63,7 +63,8 @@ def getEntry(word, app_id=None, app_key=None, language=language):
 
 def formatEntry(word, app_id=None, app_key=None, language=language) -> object:
     try:
-        """returns an empty dict if the entry can't be found
+        """
+            returns an empty dict if the entry can't be found
             returning: {
                 word: str,
                 results: List[
@@ -81,17 +82,16 @@ def formatEntry(word, app_id=None, app_key=None, language=language) -> object:
                             notes: List[str]
                         }]
                     }]
-                }]
-            }"""
+                ]
+            }
+        """
+
         r = getEntry(word, app_id, app_key, language)
 
-        returning: Dict = {}
-        returning["word"] = r["word"]
-        returning["results"] = []
+        returning: Dict = {"word": r["word"], "results": []}
         results = r["results"]
 
         for result in results:
-
             myResult: List[object] = []
             for lexicalEntry in result["lexicalEntries"]:
                 myLexical: Dict = {}
