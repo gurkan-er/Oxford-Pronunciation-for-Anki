@@ -1,12 +1,16 @@
+import os
 from typing import Dict, List
 
 import requests
+from dotenv import load_dotenv
 from requests import HTTPError
 
-APP_ID = "add your id"
-APP_KEY = "add your key"
+load_dotenv()  # Load environment variables from .env file
 
-base_url = "https://od-api.oxforddictionaries.com/api/v2"
+APP_ID = os.getenv('APP_ID')
+APP_KEY = os.getenv('APP_KEY')
+
+BASE_URL = "https://od-api.oxforddictionaries.com/api/v2"
 
 # for british accent. <https://developer.oxforddictionaries.com/documentation/languages>
 language = 'en-gb'
@@ -28,7 +32,7 @@ def getLemmas(word, app_id=None, app_key=None, language=language) -> List[str]:
 
     # print("getLemmas", file=sys.stderr)
 
-    url = base_url + "/lemmas/" + language + '/' + word
+    url = BASE_URL + "/lemmas/" + language + '/' + word
     r = requests.get(url, headers={"app_id": app_id, "app_key": app_key})
 
     res: List[str] = []
@@ -52,7 +56,7 @@ def getEntry(word, app_id=None, app_key=None, language=language):
     # <https://developer.oxforddictionaries.com/documentation>
     endpoint = "entries"
 
-    url = base_url + "/" + endpoint + "/" + language + '/' + word
+    url = BASE_URL + "/" + endpoint + "/" + language + '/' + word
     r = requests.get(url, headers={"app_id": app_id, "app_key": app_key})
 
     if not r.ok:
